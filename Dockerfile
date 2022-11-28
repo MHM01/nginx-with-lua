@@ -57,9 +57,10 @@ RUN curl -kL -o  ${INSTALL_DIRECTORY}/modules/lua-resty-lrucache-0.11.tar.gz htt
     && rm ${INSTALL_DIRECTORY}/modules/lua-resty-lrucache-0.11.tar.gz
 
 
-
 ##### INSTALL RESTY HTTP
-
+RUN curl -kL -o  ${INSTALL_DIRECTORY}/modules/lua-resty-http-0.16.1.tar.gz https://codeload.github.com/ledgetech/lua-resty-http/tar.gz/refs/tags/v0.16.1 \
+    && tar -zxf ${INSTALL_DIRECTORY}/modules/lua-resty-http-0.16.1.tar.gz --directory ${INSTALL_DIRECTORY}/modules \
+    && rm ${INSTALL_DIRECTORY}/modules/lua-resty-http-0.16.1.tar.gz
 
 
 RUN cd $INSTALL_DIRECTORY/modules/luajit2* \
@@ -71,8 +72,14 @@ RUN cd $INSTALL_DIRECTORY/modules/lua-resty-core* \
 RUN cd $INSTALL_DIRECTORY/modules/lua-resty-lrucache* \
     && make install
 
-RUN cd
-RUN find $INSTALL_DIRECTORY/modules -name '*.so' -exec mv {} $DATA_DIR/modules/ \;
+RUN cd $INSTALL_DIRECTORY/modules/lua-resty-lrucache* \
+    && make install
+
+RUN cd $INSTALL_DIRECTORY/modules/lua-resty-http* \
+    && make install
+
+#RUN cd
+#RUN find $INSTALL_DIRECTORY/modules -name '*.so' -exec mv {} $DATA_DIR/modules/ \;
 
 RUN export LUAJIT_LIB=/usr/local/lib \
   && export LUAJIT_INC=/usr/local/include/luajit-2.1 \
